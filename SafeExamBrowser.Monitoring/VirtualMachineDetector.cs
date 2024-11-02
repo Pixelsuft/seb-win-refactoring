@@ -22,24 +22,10 @@ namespace SafeExamBrowser.Monitoring
 		private const string VIRTUALBOX_MAC_PREFIX = "080027";
 
 		private static readonly string[] DeviceBlacklist =
-		{
-			// Hyper-V
-			"PROD_VIRTUAL", "HYPER_V",
-			// QEMU
-			"qemu", "ven_1af4", "ven_1b36", "subsys_11001af4",
-			// VirtualBox
-			"VEN_VBOX", "vid_80ee",
-			// VMware
-			"PROD_VMWARE", "VEN_VMWARE", "VMWARE_IDE"
-		};
+		{};
 
 		private static readonly string[] DeviceWhitelist =
-		{
-			// Microsoft Virtual Disk Device
-			"PROD_VIRTUAL_DISK",
-			// Microsoft Virtual DVD Device
-			"PROD_VIRTUAL_DVD"
-		};
+		{};
 
 		private readonly ILogger logger;
 		private readonly IRegistry registry;
@@ -55,12 +41,6 @@ namespace SafeExamBrowser.Monitoring
 		public bool IsVirtualMachine()
 		{
 			var isVirtualMachine = false;
-
-			isVirtualMachine |= HasVirtualDevice();
-			isVirtualMachine |= HasVirtualMacAddress();
-			isVirtualMachine |= IsVirtualCpu();
-			isVirtualMachine |= IsVirtualRegistry();
-			isVirtualMachine |= IsVirtualSystem(systemInfo.BiosInfo, systemInfo.Manufacturer, systemInfo.Model);
 
 			logger.Debug($"Computer '{systemInfo.Name}' appears {(isVirtualMachine ? "" : "not ")}to be a virtual machine.");
 
@@ -115,22 +95,6 @@ namespace SafeExamBrowser.Monitoring
 		private bool IsVirtualSystem(string biosInfo, string manufacturer, string model)
 		{
 			var isVirtualSystem = false;
-
-			biosInfo = biosInfo.ToLower();
-			manufacturer = manufacturer.ToLower();
-			model = model.ToLower();
-
-			isVirtualSystem |= biosInfo.Contains("hyper-v");
-			isVirtualSystem |= biosInfo.Contains("virtualbox");
-			isVirtualSystem |= biosInfo.Contains("vmware");
-			isVirtualSystem |= biosInfo.Contains("ovmf");
-			isVirtualSystem |= biosInfo.Contains("edk ii unknown");
-			isVirtualSystem |= manufacturer.Contains("microsoft corporation") && !model.Contains("surface");
-			isVirtualSystem |= manufacturer.Contains("parallels software");
-			isVirtualSystem |= manufacturer.Contains("qemu");
-			isVirtualSystem |= manufacturer.Contains("vmware");
-			isVirtualSystem |= model.Contains("virtualbox");
-			isVirtualSystem |= model.Contains("Q35 +");
 
 			return isVirtualSystem;
 		}

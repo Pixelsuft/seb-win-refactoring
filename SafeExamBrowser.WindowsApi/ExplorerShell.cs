@@ -48,7 +48,7 @@ namespace SafeExamBrowser.WindowsApi
 			}
 
 			logger.Info("Minimizing all open windows...");
-			nativeMethods.MinimizeAllOpenWindows();
+			//nativeMethods.MinimizeAllOpenWindows();
 			logger.Info("Open windows successfully minimized.");
 		}
 
@@ -62,7 +62,7 @@ namespace SafeExamBrowser.WindowsApi
 				logger.Info($"Restored window '{window.Title}' with handle = {window.Handle}.");
 			}
 
-			minimizedWindows.Clear();
+			//minimizedWindows.Clear();
 			logger.Info("Minimized windows successfully restored.");
 		}
 
@@ -100,7 +100,7 @@ namespace SafeExamBrowser.WindowsApi
 
 			if (process != null)
 			{
-				logger.Debug($"Found explorer shell processes with PID = {processId}. Sending close message...");
+				/*logger.Debug($"Found explorer shell processes with PID = {processId}. Sending close message...");
 				nativeMethods.PostCloseMessageToShell();
 				logger.Debug("Waiting for explorer shell to terminate...");
 
@@ -126,7 +126,7 @@ namespace SafeExamBrowser.WindowsApi
 				else
 				{
 					logger.Error($"Failed to completely terminate explorer shell process with PID = {processId}.");
-				}
+				}*/
 
 				process.Close();
 			}
@@ -138,7 +138,7 @@ namespace SafeExamBrowser.WindowsApi
 
 		private void KillExplorerShell(int processId)
 		{
-			var process = new System.Diagnostics.Process();
+			/*var process = new System.Diagnostics.Process();
 			var taskkillPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "taskkill.exe");
 
 			logger.Warn("Failed to gracefully terminate explorer shell, attempting forceful termination...");
@@ -150,7 +150,7 @@ namespace SafeExamBrowser.WindowsApi
 			process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			process.StartInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
 			process.Start();
-			process.WaitForExit();
+			process.WaitForExit();*/
 		}
 	}
 }

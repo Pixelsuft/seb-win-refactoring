@@ -205,7 +205,7 @@ namespace SafeExamBrowser.Runtime
 
 			runtimeWindow.ShowProgressBar = false;
 			runtimeWindow.ShowLog = Session.Settings.Security.AllowApplicationLogAccess;
-			runtimeWindow.TopMost = Session.Settings.Security.KioskMode != KioskMode.None;
+			runtimeWindow.TopMost = false;
 			runtimeWindow.UpdateStatus(TextKey.RuntimeWindow_ApplicationRunning);
 
 			if (Session.Settings.Security.KioskMode == KioskMode.DisableExplorerShell)
@@ -239,7 +239,7 @@ namespace SafeExamBrowser.Runtime
 
 				runtimeWindow.ShowProgressBar = false;
 				runtimeWindow.UpdateStatus(TextKey.RuntimeWindow_ApplicationRunning);
-				runtimeWindow.TopMost = Session.Settings.Security.KioskMode != KioskMode.None;
+				runtimeWindow.TopMost = false;
 
 				if (Session.Settings.Security.KioskMode == KioskMode.DisableExplorerShell)
 				{

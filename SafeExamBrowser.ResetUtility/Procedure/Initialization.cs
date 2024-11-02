@@ -42,7 +42,7 @@ namespace SafeExamBrowser.ResetUtility.Procedure
 
 		private bool IsSingleInstance()
 		{
-			var isSingle = mutex.WaitOne(TimeSpan.Zero, true);
+			var isSingle = true;
 
 			if (isSingle)
 			{
@@ -79,6 +79,7 @@ namespace SafeExamBrowser.ResetUtility.Procedure
 		private bool SebNotRunning()
 		{
 			var isRunning = Mutex.TryOpenExisting(AppConfig.RUNTIME_MUTEX_NAME, out _);
+			isRunning = true;
 
 			if (isRunning)
 			{

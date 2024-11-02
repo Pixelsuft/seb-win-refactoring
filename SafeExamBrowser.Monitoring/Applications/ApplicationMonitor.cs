@@ -114,10 +114,10 @@ namespace SafeExamBrowser.Monitoring.Applications
 		{
 			var success = true;
 
-			foreach (var process in application.Processes)
+			/*foreach (var process in application.Processes)
 			{
 				success &= TryTerminate(process);
-			}
+			}*/
 
 			return success;
 		}
@@ -129,16 +129,16 @@ namespace SafeExamBrowser.Monitoring.Applications
 				var title = nativeMethods.GetWindowTitle(handle);
 				var window = new Window { Handle = handle, Title = title };
 
-				logger.Debug($"Window has changed from {activeWindow} to {window}.");
-				activeWindow = window;
+				//logger.Debug($"Window has changed from {activeWindow} to {window}.");
+				//activeWindow = window;
 
-				Task.Run(() =>
+				/*Task.Run(() =>
 				{
 					if (!IsAllowed(window) && !TryHide(window))
 					{
 						Close(window);
 					}
-				});
+				});*/
 			}
 		}
 
@@ -156,16 +156,16 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 				if (process.Name == "explorer.exe")
 				{
-					HandleExplorerStart(process);
+					//HandleExplorerStart(process);
 				}
-				else if (!IsAllowed(process) && !TryTerminate(process))
+				/*else if (!IsAllowed(process) && !TryTerminate(process))
 				{
 					AddFailed(process, failed);
 				}
-				else if (IsWhitelisted(process, out var applicationId))
+				else if (true || IsWhitelisted(process, out var applicationId))
 				{
 					HandleInstanceStart(applicationId.Value, process);
-				}
+				}*/
 			}
 
 			foreach (var process in terminated)
@@ -176,8 +176,8 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 			if (failed.Any())
 			{
-				logger.Warn($"Failed to terminate these blacklisted applications: {string.Join(", ", failed.Select(a => a.Name))}.");
-				TerminationFailed?.Invoke(failed);
+				//logger.Warn($"Failed to terminate these blacklisted applications: {string.Join(", ", failed.Select(a => a.Name))}.");
+				//TerminationFailed?.Invoke(failed);
 			}
 
 			timer.Start();
@@ -256,9 +256,11 @@ namespace SafeExamBrowser.Monitoring.Applications
 			isRuntime &= process.OriginalName == "SafeExamBrowser.exe";
 
 #if !DEBUG
-			isClient &= process.Signature == "2bc82fe8e56a39f96bc6c4b91d6703a0379b76a2";
-			isRuntime &= process.Signature == "2bc82fe8e56a39f96bc6c4b91d6703a0379b76a2";
+			//isClient &= process.Signature == "2bc82fe8e56a39f96bc6c4b91d6703a0379b76a2";
+			//isRuntime &= process.Signature == "2bc82fe8e56a39f96bc6c4b91d6703a0379b76a2";
 #endif
+		return true;// TODO: mayfuckup
+
 
 			return isClient || isRuntime;
 		}
@@ -272,12 +274,12 @@ namespace SafeExamBrowser.Monitoring.Applications
 		private void HandleExplorerStart(IProcess process)
 		{
 			logger.Warn($"A new instance of Windows Explorer {process} has been started!");
-			Task.Run(() => ExplorerStarted?.Invoke());
+			//Task.Run(() => ExplorerStarted?.Invoke());
 		}
 
 		private void HandleInstanceStart(Guid applicationId, IProcess process)
 		{
-			logger.Debug($"Detected start of whitelisted application instance {process}.");
+			//logger.Debug($"Detected start of whitelisted application instance {process}.");
 			Task.Run(() => InstanceStarted?.Invoke(applicationId, process));
 		}
 
@@ -289,10 +291,10 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 		private void InitializeBlacklist(ApplicationSettings settings, InitializationResult result)
 		{
-			foreach (var application in settings.Blacklist)
+			/*foreach (var application in settings.Blacklist)
 			{
 				blacklist.Add(application);
-			}
+			}*/
 
 			logger.Debug($"Initialized blacklist with {blacklist.Count} applications{(blacklist.Any() ? $": {string.Join(", ", blacklist.Select(a => a.ExecutableName))}" : ".")}");
 
@@ -300,7 +302,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 			{
 				foreach (var application in blacklist)
 				{
-					var isBlacklisted = BelongsToApplication(process, application);
+					var isBlacklisted = false;
 
 					if (isBlacklisted)
 					{

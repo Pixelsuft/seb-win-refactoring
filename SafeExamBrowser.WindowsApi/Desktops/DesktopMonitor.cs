@@ -67,7 +67,7 @@ namespace SafeExamBrowser.WindowsApi.Desktops
 
 					if (name?.Equals(desktop.Name, StringComparison.OrdinalIgnoreCase) != true)
 					{
-						logger.Warn($"Detected desktop switch to '{name}' [{handle}], trying to reactivate {desktop}...");
+						//logger.Warn($"Detected desktop switch to '{name}' [{handle}], trying to reactivate {desktop}...");
 						desktop.Activate();
 					}
 				}

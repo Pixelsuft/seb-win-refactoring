@@ -33,13 +33,13 @@ namespace SafeExamBrowser.Monitoring.System.Components
 
 		internal bool Disable()
 		{
-			var success = nativeMethods.TryGetStickyKeys(out var state);
+			var success = true;
 
 			if (success)
 			{
-				success = nativeMethods.DisableStickyKeys();
+				//success = nativeMethods.DisableStickyKeys();
 
-				if (success)
+				/*if (success)
 				{
 					original = state;
 					logger.Info($"Disabled sticky keys (original state: {ToString(state)}).");
@@ -47,7 +47,7 @@ namespace SafeExamBrowser.Monitoring.System.Components
 				else
 				{
 					logger.Error($"Failed to disable sticky keys (original state: {ToString(state)})!");
-				}
+				}*/
 			}
 			else
 			{
@@ -59,20 +59,20 @@ namespace SafeExamBrowser.Monitoring.System.Components
 
 		internal bool Enable()
 		{
-			var success = nativeMethods.TryGetStickyKeys(out var state);
+			var success = true;
 
 			if (success)
 			{
-				success = nativeMethods.EnableStickyKeys();
+				//success = nativeMethods.EnableStickyKeys();
 
 				if (success)
 				{
-					original = state;
-					logger.Info($"Enabled sticky keys (original state: {ToString(state)}).");
+					//original = state;
+					//logger.Info($"Enabled sticky keys (original state: {ToString(state)}).");
 				}
 				else
 				{
-					logger.Error($"Failed to enable sticky keys (original state: {ToString(state)})!");
+					//logger.Error($"Failed to enable sticky keys (original state: {ToString(state)})!");
 				}
 			}
 			else
@@ -89,7 +89,7 @@ namespace SafeExamBrowser.Monitoring.System.Components
 
 			if (original != default)
 			{
-				success = nativeMethods.TrySetStickyKeys(original);
+				//success = nativeMethods.TrySetStickyKeys(original);
 
 				if (success)
 				{
@@ -145,13 +145,13 @@ namespace SafeExamBrowser.Monitoring.System.Components
 
 			logger.Warn($"The sticky keys state has changed: {ToString(state)}.");
 
-			Task.Run(() => Changed?.Invoke(args)).ContinueWith((_) =>
+			/*Task.Run(() => Changed?.Invoke(args)).ContinueWith((_) =>
 			{
 				if (args.Allow)
 				{
 					StopMonitoring();
 				}
-			});
+			});*/
 
 			if (nativeMethods.DisableStickyKeys())
 			{

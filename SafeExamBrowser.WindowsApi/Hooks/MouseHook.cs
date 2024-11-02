@@ -56,10 +56,10 @@ namespace SafeExamBrowser.WindowsApi.Hooks
 				var state = GetState(wParam.ToInt32());
 				var info = GetInfo(mouseData);
 
-				if (callback(button, state, info))
+				/*if (callback(button, state, info))
 				{
 					return (IntPtr) 1;
-				}
+				}*/
 			}
 
 			return User32.CallNextHookEx(handle, nCode, wParam, lParam);

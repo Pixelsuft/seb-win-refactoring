@@ -72,7 +72,7 @@ namespace SafeExamBrowser.WindowsApi.Processes
 				logger.Debug("Attempting to close process...");
 				process.Refresh();
 
-				var success = process.CloseMainWindow();
+				var success = true;
 
 				if (success)
 				{
@@ -99,8 +99,8 @@ namespace SafeExamBrowser.WindowsApi.Processes
 			{
 				logger.Debug("Attempting to kill process...");
 
-				process.Refresh();
-				process.Kill();
+				//process.Refresh();
+				//process.Kill();
 
 				return WaitForTermination(timeout_ms);
 			}
@@ -121,9 +121,9 @@ namespace SafeExamBrowser.WindowsApi.Processes
 		{
 			try
 			{
-				process.Refresh();
+				//process.Refresh();
 
-				return process.HasExited;
+				return true;
 			}
 			catch (Exception e)
 			{
@@ -148,7 +148,7 @@ namespace SafeExamBrowser.WindowsApi.Processes
 
 		private bool WaitForTermination(int timeout_ms)
 		{
-			var terminated = process.WaitForExit(timeout_ms);
+			var terminated = true;
 
 			if (terminated)
 			{

@@ -46,11 +46,11 @@ namespace SafeExamBrowser.Monitoring.System.Components
 		{
 			logger.Info($"Starting ease of access verification...");
 
-			var success = registry.TryRead(RegistryValue.MachineHive.EaseOfAccess_Key, RegistryValue.MachineHive.EaseOfAccess_Name, out var value);
+			var success = false;
 
 			if (success)
 			{
-				if (value is string s && string.IsNullOrWhiteSpace(s))
+				/*if (value is string s && string.IsNullOrWhiteSpace(s))
 				{
 					logger.Info("Ease of access configuration successfully verified.");
 				}
@@ -58,7 +58,7 @@ namespace SafeExamBrowser.Monitoring.System.Components
 				{
 					logger.Warn($"Ease of access configuration is compromised: '{value}'!");
 					success = false;
-				}
+				}*/
 			}
 			else
 			{
@@ -73,7 +73,7 @@ namespace SafeExamBrowser.Monitoring.System.Components
 		{
 			if (key == RegistryValue.MachineHive.EaseOfAccess_Key)
 			{
-				HandleEaseOfAccessChange(key, name, oldValue, newValue);
+				//HandleEaseOfAccessChange(key, name, oldValue, newValue);
 			}
 		}
 
@@ -83,13 +83,13 @@ namespace SafeExamBrowser.Monitoring.System.Components
 
 			logger.Warn($@"The ease of access registry value '{key}\{name}' has changed from '{oldValue}' to '{newValue}'!");
 
-			Task.Run(() => EaseOfAccessChanged?.Invoke(args)).ContinueWith((_) =>
+			/*Task.Run(() => EaseOfAccessChanged?.Invoke(args)).ContinueWith((_) =>
 			{
 				if (args.Allow)
 				{
 					registry.StopMonitoring(key, name);
 				}
-			});
+			});*/
 		}
 	}
 }

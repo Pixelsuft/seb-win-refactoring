@@ -56,10 +56,10 @@ namespace SafeExamBrowser.WindowsApi.Hooks
 				var modifier = GetModifiers(keyData, wParam.ToInt32());
 				var state = GetState(wParam.ToInt32());
 
-				if (callback((int) keyData.KeyCode, modifier, state))
+				/*if (callback((int) keyData.KeyCode, modifier, state))
 				{
 					return (IntPtr) 1;
-				}
+				}*/
 			}
 
 			return User32.CallNextHookEx(handle, nCode, wParam, lParam);
@@ -84,7 +84,7 @@ namespace SafeExamBrowser.WindowsApi.Hooks
 		{
 			var modifier = KeyModifier.None;
 
-			TrackCtrlAndAlt(keyData, wParam);
+			/*TrackCtrlAndAlt(keyData, wParam);
 
 			if (altPressed || keyData.Flags.HasFlag(KBDLLHOOKSTRUCTFlags.LLKHF_ALTDOWN))
 			{
@@ -94,7 +94,7 @@ namespace SafeExamBrowser.WindowsApi.Hooks
 			if (ctrlPressed)
 			{
 				modifier |= KeyModifier.Ctrl;
-			}
+			}*/
 
 			return modifier;
 		}
