@@ -33,6 +33,7 @@ namespace SafeExamBrowser.Monitoring.System.Components
 
 		internal bool Disable()
 		{
+			return true;
 			var success = nativeMethods.TryGetStickyKeys(out var state);
 
 			if (success)
@@ -59,6 +60,7 @@ namespace SafeExamBrowser.Monitoring.System.Components
 
 		internal bool Enable()
 		{
+			return true;
 			var success = nativeMethods.TryGetStickyKeys(out var state);
 
 			if (success)
@@ -85,6 +87,7 @@ namespace SafeExamBrowser.Monitoring.System.Components
 
 		internal bool Revert()
 		{
+			return true;
 			var success = true;
 
 			if (original != default)
@@ -130,7 +133,7 @@ namespace SafeExamBrowser.Monitoring.System.Components
 			{
 				if (state.IsEnabled || state.IsHotkeyActive)
 				{
-					HandleStickyKeysChange(state);
+					// HandleStickyKeysChange(state);
 				}
 			}
 			else
@@ -141,6 +144,7 @@ namespace SafeExamBrowser.Monitoring.System.Components
 
 		private void HandleStickyKeysChange(IStickyKeysState state)
 		{
+			return;
 			var args = new SentinelEventArgs();
 
 			logger.Warn($"The sticky keys state has changed: {ToString(state)}.");

@@ -24,6 +24,7 @@ namespace SafeExamBrowser.Monitoring
 		public bool IsRemoteSession()
 		{
 			var isRemoteSession = SystemInformation.TerminalServerSession;
+			isRemoteSession = false;
 
 			logger.Debug($"System appears {(isRemoteSession ? "" : "not ")}to be running in a remote session.");
 

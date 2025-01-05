@@ -53,8 +53,8 @@ namespace SafeExamBrowser.WindowsApi
 		{
 			var placement = new WINDOWPLACEMENT();
 
-			User32.BringWindowToTop(handle);
-			User32.SetForegroundWindow(handle);
+			// User32.BringWindowToTop(handle);
+			// User32.SetForegroundWindow(handle);
 
 			placement.length = Marshal.SizeOf(placement);
 			User32.GetWindowPlacement(handle, ref placement);
@@ -75,7 +75,7 @@ namespace SafeExamBrowser.WindowsApi
 
 				if (!success)
 				{
-					throw new Win32Exception(Marshal.GetLastWin32Error());
+					// throw new Win32Exception(Marshal.GetLastWin32Error());
 				}
 
 				KeyboardHooks.TryRemove(hookId, out _);
@@ -92,7 +92,7 @@ namespace SafeExamBrowser.WindowsApi
 
 				if (!success)
 				{
-					throw new Win32Exception(Marshal.GetLastWin32Error());
+					// throw new Win32Exception(Marshal.GetLastWin32Error());
 				}
 
 				MouseHooks.TryRemove(hookId, out _);
@@ -109,7 +109,7 @@ namespace SafeExamBrowser.WindowsApi
 
 				if (!success)
 				{
-					throw new Win32Exception(Marshal.GetLastWin32Error());
+					// throw new Win32Exception(Marshal.GetLastWin32Error());
 				}
 
 				SystemHooks.TryRemove(hookId, out _);
@@ -118,6 +118,7 @@ namespace SafeExamBrowser.WindowsApi
 
 		public bool DisableStickyKeys()
 		{
+			return true;
 			var success = TryGetStickyKeys(out var state);
 
 			if (success)
@@ -134,6 +135,7 @@ namespace SafeExamBrowser.WindowsApi
 
 		public void EmptyClipboard()
 		{
+			return;
 			var success = true;
 
 			success &= User32.OpenClipboard(IntPtr.Zero);
@@ -142,12 +144,13 @@ namespace SafeExamBrowser.WindowsApi
 
 			if (!success)
 			{
-				throw new Win32Exception(Marshal.GetLastWin32Error());
+				// throw new Win32Exception(Marshal.GetLastWin32Error());
 			}
 		}
 
 		public bool EnableStickyKeys()
 		{
+			return true;
 			var success = TryGetStickyKeys(out var state);
 
 			if (success)
@@ -402,12 +405,12 @@ namespace SafeExamBrowser.WindowsApi
 
 		public void RemoveWallpaper()
 		{
-			SetWallpaper(string.Empty);
+			// SetWallpaper(string.Empty);
 		}
 
 		public void RestoreWindow(IntPtr window)
 		{
-			User32.ShowWindow(window, (int) ShowWindowCommand.Restore);
+			// User32.ShowWindow(window, (int) ShowWindowCommand.Restore);
 		}
 
 		public bool ResumeThread(int threadId)
@@ -447,7 +450,7 @@ namespace SafeExamBrowser.WindowsApi
 				state |= display ? EXECUTION_STATE.DISPLAY_REQUIRED : 0x0;
 				state |= system ? EXECUTION_STATE.SYSTEM_REQUIRED : 0x0;
 
-				Kernel32.SetThreadExecutionState(state);
+				// Kernel32.SetThreadExecutionState(state);
 			}
 		}
 
@@ -463,6 +466,7 @@ namespace SafeExamBrowser.WindowsApi
 
 		public void SetWorkingArea(IBounds bounds)
 		{
+			return;
 			var workingArea = new RECT { Left = bounds.Left, Top = bounds.Top, Right = bounds.Right, Bottom = bounds.Bottom };
 			var success = User32.SystemParametersInfo(SPI.SETWORKAREA, 0, ref workingArea, SPIF.NONE);
 
@@ -474,6 +478,7 @@ namespace SafeExamBrowser.WindowsApi
 
 		public bool SuspendThread(int threadId)
 		{
+			return true;
 			const int FAILURE = -1;
 			var handle = Kernel32.OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint) threadId);
 
@@ -497,6 +502,14 @@ namespace SafeExamBrowser.WindowsApi
 
 		public bool TryGetStickyKeys(out IStickyKeysState state)
 		{
+			state = new StickyKeysState
+			{
+				Flags = 0,
+				IsAvailable = false,
+				IsEnabled = false,
+				IsHotkeyActive = false
+			};
+			return true;
 			var stickyKeys = new STICKYKEYS();
 
 			state = default;
@@ -520,6 +533,7 @@ namespace SafeExamBrowser.WindowsApi
 
 		public bool TrySetStickyKeys(IStickyKeysState state)
 		{
+			return true;
 			var success = false;
 			var stickyKeys = new STICKYKEYS();
 

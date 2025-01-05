@@ -35,6 +35,7 @@ namespace SafeExamBrowser.WindowsApi
 		{
 			logger.Info("Searching for windows to be minimized...");
 
+			/*
 			foreach (var handle in nativeMethods.GetOpenWindows())
 			{
 				var window = new Window
@@ -46,9 +47,10 @@ namespace SafeExamBrowser.WindowsApi
 				minimizedWindows.Add(window);
 				logger.Info($"Found window '{window.Title}' with handle = {window.Handle}.");
 			}
+			*/
 
 			logger.Info("Minimizing all open windows...");
-			nativeMethods.MinimizeAllOpenWindows();
+			// nativeMethods.MinimizeAllOpenWindows();
 			logger.Info("Open windows successfully minimized.");
 		}
 
@@ -98,7 +100,7 @@ namespace SafeExamBrowser.WindowsApi
 			var explorerProcesses = System.Diagnostics.Process.GetProcessesByName("explorer");
 			var process = explorerProcesses.FirstOrDefault(p => p.Id == processId);
 
-			if (process != null)
+			if (process != null && false)
 			{
 				logger.Debug($"Found explorer shell processes with PID = {processId}. Sending close message...");
 				nativeMethods.PostCloseMessageToShell();

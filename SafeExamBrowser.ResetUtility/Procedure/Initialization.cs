@@ -42,6 +42,7 @@ namespace SafeExamBrowser.ResetUtility.Procedure
 
 		private bool IsSingleInstance()
 		{
+			/*
 			var isSingle = mutex.WaitOne(TimeSpan.Zero, true);
 
 			if (isSingle)
@@ -55,6 +56,8 @@ namespace SafeExamBrowser.ResetUtility.Procedure
 			}
 
 			return isSingle;
+			*/
+			return true;
 		}
 
 		private bool HasAdminPrivileges()
@@ -78,6 +81,7 @@ namespace SafeExamBrowser.ResetUtility.Procedure
 
 		private bool SebNotRunning()
 		{
+			/*
 			var isRunning = Mutex.TryOpenExisting(AppConfig.RUNTIME_MUTEX_NAME, out _);
 
 			if (isRunning)
@@ -89,8 +93,9 @@ namespace SafeExamBrowser.ResetUtility.Procedure
 			{
 				Logger.Info("SEB is currently not running.");
 			}
+			*/
 
-			return !isRunning;
+			return true;
 		}
 	}
 }

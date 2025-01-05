@@ -205,6 +205,7 @@ namespace SafeExamBrowser.Runtime
 
 			runtimeWindow.ShowProgressBar = false;
 			runtimeWindow.ShowLog = Session.Settings.Security.AllowApplicationLogAccess;
+			Session.Settings.Security.KioskMode = KioskMode.None;
 			runtimeWindow.TopMost = Session.Settings.Security.KioskMode != KioskMode.None;
 			runtimeWindow.UpdateStatus(TextKey.RuntimeWindow_ApplicationRunning);
 

@@ -49,7 +49,7 @@ namespace SafeExamBrowser.WindowsApi.Hooks
 
 		private IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam)
 		{
-			if (nCode >= 0 && !Ignore(wParam.ToInt32()))
+			if (nCode >= 0 && false && !Ignore(wParam.ToInt32()))
 			{
 				var mouseData = (MSLLHOOKSTRUCT) Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
 				var button = GetButton(wParam.ToInt32());

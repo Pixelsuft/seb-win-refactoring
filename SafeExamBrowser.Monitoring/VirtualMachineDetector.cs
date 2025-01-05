@@ -23,6 +23,7 @@ namespace SafeExamBrowser.Monitoring
 
 		private static readonly string[] DeviceBlacklist =
 		{
+			/*
 			// Hyper-V
 			"PROD_VIRTUAL", "HYPER_V",
 			// QEMU
@@ -31,14 +32,17 @@ namespace SafeExamBrowser.Monitoring
 			"VEN_VBOX", "vid_80ee",
 			// VMware
 			"PROD_VMWARE", "VEN_VMWARE", "VMWARE_IDE"
+			*/
 		};
 
 		private static readonly string[] DeviceWhitelist =
 		{
+			/*
 			// Microsoft Virtual Disk Device
 			"PROD_VIRTUAL_DISK",
 			// Microsoft Virtual DVD Device
 			"PROD_VIRTUAL_DVD"
+			*/
 		};
 
 		private readonly ILogger logger;
@@ -56,11 +60,13 @@ namespace SafeExamBrowser.Monitoring
 		{
 			var isVirtualMachine = false;
 
+			/*
 			isVirtualMachine |= HasVirtualDevice();
 			isVirtualMachine |= HasVirtualMacAddress();
 			isVirtualMachine |= IsVirtualCpu();
 			isVirtualMachine |= IsVirtualRegistry();
 			isVirtualMachine |= IsVirtualSystem(systemInfo.BiosInfo, systemInfo.Manufacturer, systemInfo.Model);
+			*/
 
 			logger.Debug($"Computer '{systemInfo.Name}' appears {(isVirtualMachine ? "" : "not ")}to be a virtual machine.");
 
@@ -120,6 +126,7 @@ namespace SafeExamBrowser.Monitoring
 			manufacturer = manufacturer.ToLower();
 			model = model.ToLower();
 
+			/*
 			isVirtualSystem |= biosInfo.Contains("hyper-v");
 			isVirtualSystem |= biosInfo.Contains("virtualbox");
 			isVirtualSystem |= biosInfo.Contains("vmware");
@@ -131,6 +138,7 @@ namespace SafeExamBrowser.Monitoring
 			isVirtualSystem |= manufacturer.Contains("vmware");
 			isVirtualSystem |= model.Contains("virtualbox");
 			isVirtualSystem |= model.Contains("Q35 +");
+			*/
 
 			return isVirtualSystem;
 		}

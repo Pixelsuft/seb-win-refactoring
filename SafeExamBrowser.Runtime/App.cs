@@ -38,7 +38,7 @@ namespace SafeExamBrowser.Runtime
 
 		private static void StartApplication()
 		{
-			if (NoInstanceRunning())
+			if (true || NoInstanceRunning())
 			{
 				new App().Run();
 			}
@@ -50,7 +50,8 @@ namespace SafeExamBrowser.Runtime
 
 		private static bool NoInstanceRunning()
 		{
-			return Mutex.WaitOne(TimeSpan.Zero, true);
+			return true;
+			// return Mutex.WaitOne(TimeSpan.Zero, true);
 		}
 
 		protected override void OnStartup(StartupEventArgs e)

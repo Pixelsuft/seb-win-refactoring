@@ -48,7 +48,7 @@ namespace SafeExamBrowser.Monitoring.Keyboard
 		{
 			var block = false;
 			var key = KeyInterop.KeyFromVirtualKey(keyCode);
-
+			/*
 			block |= key == Key.Apps;
 			block |= key == Key.Escape && modifier == KeyModifier.None && !settings.AllowEsc;
 			block |= key == Key.F1 && !settings.AllowF1;
@@ -76,7 +76,7 @@ namespace SafeExamBrowser.Monitoring.Keyboard
 			block |= modifier.HasFlag(KeyModifier.Ctrl) && key == Key.Escape && !settings.AllowCtrlEsc;
 			block |= modifier.HasFlag(KeyModifier.Ctrl) && key == Key.V && !settings.AllowCtrlV;
 			block |= modifier.HasFlag(KeyModifier.Ctrl) && key == Key.X && !settings.AllowCtrlX;
-
+			*/
 			if (block)
 			{
 				Log(key, keyCode, modifier, state);

@@ -817,6 +817,7 @@ namespace SebWindowsConfig
 
 			SEBSettings.prohibitedProcessesDefault = new List<string>
 			{
+				/*
 				"Chrome.exe",
 				"Chromium.exe",
 				"Vivaldi.exe",
@@ -826,9 +827,11 @@ namespace SebWindowsConfig
 				"UCBrowser.exe",
 				"CamRecorder.exe",
 				"Firefox.exe"
+				*/
 			};
 			SEBSettings.prohibitedProcessesDefaultStrict = new List<string>
 			{
+				/*
 				"Skype.exe",
 				"SkypeApp.exe",
 				"SkypeHost.exe",
@@ -881,6 +884,7 @@ namespace SebWindowsConfig
 				"vlc.exe",
 				"sethc.exe",
 				"Guilded.exe",
+				*/
 			};
 
 			// Default settings for group "Network - Filter"

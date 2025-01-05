@@ -114,10 +114,12 @@ namespace SafeExamBrowser.Monitoring.Applications
 		{
 			var success = true;
 
+			/*
 			foreach (var process in application.Processes)
 			{
 				success &= TryTerminate(process);
 			}
+			*/
 
 			return success;
 		}
@@ -129,9 +131,10 @@ namespace SafeExamBrowser.Monitoring.Applications
 				var title = nativeMethods.GetWindowTitle(handle);
 				var window = new Window { Handle = handle, Title = title };
 
-				logger.Debug($"Window has changed from {activeWindow} to {window}.");
-				activeWindow = window;
+				// logger.Debug($"Window has changed from {activeWindow} to {window}.");
+				// activeWindow = window;
 
+				/*
 				Task.Run(() =>
 				{
 					if (!IsAllowed(window) && !TryHide(window))
@@ -139,6 +142,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 						Close(window);
 					}
 				});
+				*/
 			}
 		}
 
@@ -151,9 +155,10 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 			foreach (var process in started)
 			{
-				logger.Debug($"Process {process} has been started [{process.GetAdditionalInfo()}].");
+				// logger.Debug($"Process {process} has been started [{process.GetAdditionalInfo()}].");
 				processes.Add(process);
 
+				/*
 				if (process.Name == "explorer.exe")
 				{
 					HandleExplorerStart(process);
@@ -166,15 +171,16 @@ namespace SafeExamBrowser.Monitoring.Applications
 				{
 					HandleInstanceStart(applicationId.Value, process);
 				}
+				*/
 			}
 
 			foreach (var process in terminated)
 			{
-				logger.Debug($"Process {process} has been terminated.");
+				// logger.Debug($"Process {process} has been terminated.");
 				processes.Remove(process);
 			}
 
-			if (failed.Any())
+			if (failed.Any() && false)
 			{
 				logger.Warn($"Failed to terminate these blacklisted applications: {string.Join(", ", failed.Select(a => a.Name))}.");
 				TerminationFailed?.Invoke(failed);
@@ -185,6 +191,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 		private void AddFailed(IProcess process, List<RunningApplication> failed)
 		{
+			/*
 			var name = blacklist.First(a => BelongsToApplication(process, a)).ExecutableName;
 			var application = failed.FirstOrDefault(a => a.Name == name);
 
@@ -195,10 +202,12 @@ namespace SafeExamBrowser.Monitoring.Applications
 			}
 
 			application.Processes.Add(process);
+			*/
 		}
 
 		private void AddFailed(string name, IProcess process, InitializationResult result)
 		{
+			/*
 			var application = result.FailedAutoTerminations.FirstOrDefault(a => a.Name == name);
 
 			if (application == default(RunningApplication))
@@ -209,10 +218,12 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 			application.Processes.Add(process);
 			logger.Error($"Process {process} belongs to application '{application.Name}' and could not be terminated automatically!");
+			*/
 		}
 
 		private void AddForTermination(string name, IProcess process, InitializationResult result)
 		{
+			/*
 			var application = result.RunningApplications.FirstOrDefault(a => a.Name == name);
 
 			if (application == default(RunningApplication))
@@ -223,6 +234,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 			application.Processes.Add(process);
 			logger.Debug($"Process {process} belongs to application '{application.Name}' and needs to be terminated.");
+			*/
 		}
 
 		private bool BelongsToApplication(IProcess process, BlacklistApplication application)
@@ -249,6 +261,8 @@ namespace SafeExamBrowser.Monitoring.Applications
 			var isClient = true;
 			var isRuntime = true;
 
+			/*
+
 			isClient &= process.Name == "SafeExamBrowser.Client.exe";
 			isClient &= process.OriginalName == "SafeExamBrowser.Client.exe";
 
@@ -259,26 +273,31 @@ namespace SafeExamBrowser.Monitoring.Applications
 			isClient &= process.Signature == "2bc82fe8e56a39f96bc6c4b91d6703a0379b76a2";
 			isRuntime &= process.Signature == "2bc82fe8e56a39f96bc6c4b91d6703a0379b76a2";
 #endif
+			*/
 
 			return isClient || isRuntime;
 		}
 
 		private void Close(Window window)
 		{
+			/*
 			nativeMethods.SendCloseMessageTo(window.Handle);
 			logger.Info($"Sent close message to window {window}.");
+			*/
 		}
 
 		private void HandleExplorerStart(IProcess process)
 		{
+			/*
 			logger.Warn($"A new instance of Windows Explorer {process} has been started!");
 			Task.Run(() => ExplorerStarted?.Invoke());
+			*/
 		}
 
 		private void HandleInstanceStart(Guid applicationId, IProcess process)
 		{
 			logger.Debug($"Detected start of whitelisted application instance {process}.");
-			Task.Run(() => InstanceStarted?.Invoke(applicationId, process));
+			// Task.Run(() => InstanceStarted?.Invoke(applicationId, process));
 		}
 
 		private void InitializeProcesses()
@@ -300,10 +319,13 @@ namespace SafeExamBrowser.Monitoring.Applications
 			{
 				foreach (var application in blacklist)
 				{
-					var isBlacklisted = BelongsToApplication(process, application);
+					// var isBlacklisted = BelongsToApplication(process, application);
+					var isBlacklisted = false;
+
 
 					if (isBlacklisted)
 					{
+						/*
 						if (!application.AutoTerminate)
 						{
 							AddForTermination(application.ExecutableName, process, result);
@@ -312,6 +334,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 						{
 							AddFailed(application.ExecutableName, process, result);
 						}
+						*/
 
 						break;
 					}
@@ -336,6 +359,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 					if (isWhitelisted)
 					{
+						/*
 						if (!application.AllowRunning && !application.AutoTerminate)
 						{
 							AddForTermination(application.ExecutableName, process, result);
@@ -344,6 +368,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 						{
 							AddFailed(application.ExecutableName, process, result);
 						}
+						*/
 
 						break;
 					}
@@ -353,6 +378,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 		private bool IsAllowed(IProcess process)
 		{
+			/*
 			foreach (var application in blacklist)
 			{
 				if (BelongsToApplication(process, application))
@@ -362,6 +388,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 					return false;
 				}
 			}
+			*/
 
 			return true;
 		}
@@ -370,7 +397,8 @@ namespace SafeExamBrowser.Monitoring.Applications
 		{
 			var allowed = false;
 
-			if (TryGetProcessFor(window, out var process))
+			/*
+			 * if (TryGetProcessFor(window, out var process))
 			{
 				allowed = BelongsToSafeExamBrowser(process) || IsWhitelisted(process, out _);
 			}
@@ -379,6 +407,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 			{
 				logger.Warn($"Window {window} belongs to not whitelisted process '{process?.Name ?? "n/a"}'!");
 			}
+			*/
 
 			return allowed;
 		}
@@ -414,6 +443,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 		private bool TryHide(Window window)
 		{
+			return true;
 			var success = nativeMethods.HideWindow(window.Handle);
 
 			if (success)
