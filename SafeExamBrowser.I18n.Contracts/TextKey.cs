@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2024 ETH Zürich, IT Services
+ * Copyright (c) 2025 ETH Zürich, IT Services
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -244,12 +244,14 @@ namespace SafeExamBrowser.I18n.Contracts
 		PasswordDialog_QuitPasswordRequiredTitle,
 		PasswordDialog_SettingsPasswordRequired,
 		PasswordDialog_SettingsPasswordRequiredTitle,
+		ProctoringFinalizationDialog_Abort,
 		ProctoringFinalizationDialog_Confirm,
 		ProctoringFinalizationDialog_FailureMessage,
 		ProctoringFinalizationDialog_InfoMessage,
 		ProctoringFinalizationDialog_Status,
 		ProctoringFinalizationDialog_StatusAndTime,
 		ProctoringFinalizationDialog_StatusWaiting,
+		ProctoringFinalizationDialog_StatusWaitingAndTime,
 		ProctoringFinalizationDialog_Title,
 		RuntimeWindow_ApplicationRunning,
 		ServerFailureDialog_Abort,

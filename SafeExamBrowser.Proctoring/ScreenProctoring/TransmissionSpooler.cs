@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2024 ETH Zürich, IT Services
+ * Copyright (c) 2025 ETH Zürich, IT Services
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -57,13 +57,14 @@ namespace SafeExamBrowser.Proctoring.ScreenProctoring
 			queue.Enqueue((metaData, screenShot));
 		}
 
-		internal void ExecuteRemainingWork(Action<RemainingWorkUpdatedEventArgs> updateStatus)
+		internal void ExecuteRemainingWork(Action<RemainingWorkUpdatedEventArgs> handler)
 		{
 			var previous = buffer.Count + cache.Count;
 			var progress = 0;
+			var start = DateTime.Now;
 			var total = previous;
 
-			while (HasRemainingWork() && service.IsConnected && (!networkIssue || recovering || DateTime.Now < resume))
+			while (HasRemainingWork() && service.IsConnected)
 			{
 				var remaining = buffer.Count + cache.Count;
 
@@ -79,26 +80,19 @@ namespace SafeExamBrowser.Proctoring.ScreenProctoring
 				previous = remaining;
 				progress = total - remaining;
 
-				updateStatus(new RemainingWorkUpdatedEventArgs
+				var args = UpdateStatus(handler, progress, start, total);
+
+				if (args.CancellationRequested)
 				{
-					IsWaiting = recovering || networkIssue,
-					Next = buffer.TryPeek(out _, out var schedule, out _) ? schedule : default(DateTime?),
-					Progress = progress,
-					Resume = resume,
-					Total = total
-				});
+					logger.Warn($"The execution of the remaining work has been cancelled and {remaining} item(s) will not be transmitted!");
+
+					break;
+				}
 
 				Thread.Sleep(100);
 			}
 
-			if (networkIssue)
-			{
-				updateStatus(new RemainingWorkUpdatedEventArgs { HasFailed = true, CachePath = cache.Directory });
-			}
-			else
-			{
-				updateStatus(new RemainingWorkUpdatedEventArgs { IsFinished = true });
-			}
+			UpdateStatus(handler);
 		}
 
 		internal bool HasRemainingWork()
@@ -387,36 +381,12 @@ namespace SafeExamBrowser.Proctoring.ScreenProctoring
 			}
 		}
 
-		private int factor = 2;
-		private int bads = 2;
-
 		private int UpdateHealth(int value)
 		{
 			const int THREE_MINUTES = 180;
 
 			var previous = health;
-			// TODO: Revert!
-			// var current = value > BAD ? BAD : (value < GOOD ? GOOD : value);
-			var current = health;
-
-			// TODO: Remove!
-			if (bads > 0)
-			{
-				bads -= current == BAD ? 1 : 0;
-				factor = current == BAD ? -2 : (current == GOOD ? 2 : factor);
-				current += factor;
-				current = current < GOOD ? GOOD : (current > BAD ? BAD : current);
-			}
-			else
-			{
-				if (bads == 0)
-				{
-					logger.Warn($"Stopped health simulation (resume: {resume:HH:mm:ss}).");
-				}
-
-				bads = -1;
-				current = value > BAD ? BAD : (value < GOOD ? GOOD : value);
-			}
+			var current = value > BAD ? BAD : (value < GOOD ? GOOD : value);
 
 			if (previous != current)
 			{
@@ -444,6 +414,35 @@ namespace SafeExamBrowser.Proctoring.ScreenProctoring
 			}
 
 			return current;
+		}
+
+		private RemainingWorkUpdatedEventArgs UpdateStatus(Action<RemainingWorkUpdatedEventArgs> handler, int progress, DateTime start, int total)
+		{
+			var args = new RemainingWorkUpdatedEventArgs
+			{
+				AllowCancellation = start.Add(new TimeSpan(0, 1, 15)) < DateTime.Now,
+				IsWaiting = health == BAD || networkIssue || recovering || DateTime.Now < resume,
+				Next = buffer.TryPeek(out _, out var schedule, out _) ? schedule : default(DateTime?),
+				Progress = progress,
+				Resume = DateTime.Now < resume ? resume : default(DateTime?),
+				Total = total
+			};
+
+			handler.Invoke(args);
+
+			return args;
+		}
+
+		private void UpdateStatus(Action<RemainingWorkUpdatedEventArgs> handler)
+		{
+			if (HasRemainingWork())
+			{
+				handler.Invoke(new RemainingWorkUpdatedEventArgs { HasFailed = true, CachePath = cache.Directory });
+			}
+			else
+			{
+				handler.Invoke(new RemainingWorkUpdatedEventArgs { IsFinished = true });
+			}
 		}
 	}
 }
